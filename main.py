@@ -8,6 +8,9 @@ from torch.utils.data import sampler
 from model.DeepFM import DeepFM
 from data.dataset import CriteoDataset
 
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+
 # 900000 items for training, 10000 items for valid, of all 1000000 items
 Num_train = 800
 
@@ -23,7 +26,8 @@ feature_sizes = np.loadtxt('./data/feature_sizes.txt', delimiter=',')
 feature_sizes = [int(x) for x in feature_sizes]
 print(feature_sizes)
 
-model = DeepFM(feature_sizes, use_cuda=False)
+#model = DeepFM(feature_sizes, use_cuda=False)
+model = DeepFM(feature_sizes, use_cuda=True)
 optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=0.0)
 model.fit(loader_train, loader_val, optimizer, epochs=100, verbose=True)
 
